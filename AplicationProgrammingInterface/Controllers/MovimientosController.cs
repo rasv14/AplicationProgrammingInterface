@@ -39,6 +39,27 @@ namespace AplicationProgrammingInterface.Controllers
 
         }
 
+
+        [HttpGet]
+        public IActionResult GetMovimientosbyFechasUsuario(string id_usuario , string fecha)
+        {
+            try
+            {
+                var movimientos = _unitOfWork.Movimientos.GetMovimientosbyFechaUsuario(new Guid(id_usuario), fecha);
+                return Ok(movimientos);
+            }
+            catch (Exception ex)
+            {
+                // Capturamos la excepción y la registramos
+                Console.WriteLine($"Error: {ex.Message}");
+
+                // Devolvemos una respuesta 500 (Internal Server Error)
+                return StatusCode(StatusCodes.Status500InternalServerError, "Ocurrió un error interno en el servidor.");
+            }
+
+        }
+
+
         [HttpPost]
         public IActionResult RegistrarMovimiento(ObjMovimientos movimiento)
         {
@@ -56,9 +77,11 @@ namespace AplicationProgrammingInterface.Controllers
 
                     var validator_bd = new MovimientosValidator(_unitOfWork);
                     if (!validator_bd.ValidarRegistro(movimiento))
-                    { return Problem(detail: "La cuenta no existe", statusCode: StatusCodes.Status400BadRequest); }
+                    { return Problem(detail: "El movimiento no es valido", statusCode: StatusCodes.Status400BadRequest); }
 
                     MovimientosService movimiento_service = new MovimientosService(_unitOfWork);
+                    CuentaService cuenta_service = new CuentaService(_unitOfWork);
+
                     var cuenta = _unitOfWork.Cuenta.GetCuentabyNro(movimiento.NumeroCuenta);
                     var nuevo_movimiento = new Movimiento
                     {
@@ -66,13 +89,14 @@ namespace AplicationProgrammingInterface.Controllers
                         Fecha = DateTime.Now,
                         Tipo = movimiento.Tipo,
                         Valor = movimiento.Valor,
-                        Saldo = 0,
+                        Saldo = cuenta.Saldo,
                         IdCuenta = cuenta.Id
 
 
                     };
 
                     var crear_movimiento = movimiento_service.Registrar(nuevo_movimiento);
+                 
 
                     if (crear_movimiento != null)
                     {

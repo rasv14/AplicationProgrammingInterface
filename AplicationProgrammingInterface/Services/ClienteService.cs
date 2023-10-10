@@ -14,6 +14,11 @@ namespace AplicationProgrammingInterface.Services
             _unitOfWork = unitOfWork;
         }
 
+        public Cliente Actualizar(Cliente datos)
+        {
+            throw new NotImplementedException();
+        }
+
         public Cliente Registrar(Cliente datos)
         {
             try

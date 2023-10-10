@@ -3,9 +3,9 @@ using System.Collections.Generic;
 
 namespace Domain.Models;
 
-public partial class Cliente  
+public partial class Cliente
 {
-    public  Guid Id { get; set; }
+    public Guid Id { get; set; }
 
     public string Contrasena { get; set; } = null!;
 

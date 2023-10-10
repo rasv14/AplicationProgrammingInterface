@@ -2,6 +2,7 @@
 using Domain.Interfaces;
 using Domain.Models;
 using FluentValidation;
+using AplicationProgrammingInterface.Helpers;
 
 namespace AplicationProgrammingInterface.Clases
 {
@@ -28,12 +29,31 @@ namespace AplicationProgrammingInterface.Clases
         public bool ValidarRegistro(ObjMovimientos datos)
         {
 
-            var cuenta = _unitOfWork.Cuenta.GetCuentabyNro(datos.NumeroCuenta);
+           
+                var cuenta = _unitOfWork.Cuenta.GetCuentabyNro(datos.NumeroCuenta);
 
-            if (cuenta == null) { return false; }
+                if (cuenta == null) { throw new ApplicationException("La cuenta no existe."); }
 
 
-            return true;
+            if (datos.Tipo == EnumTipoCuentas.Retiro.GetDescription())
+            {
+
+                if (cuenta.Saldo < datos.Valor)
+                {
+
+                    throw new ApplicationException("El movimiento excede el saldo.");
+
+
+                }
+
+
+
+
+            }
+
+
+                return true;
+           
 
         }
     }

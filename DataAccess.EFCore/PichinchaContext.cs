@@ -62,12 +62,14 @@ public partial class PichinchaContext : DbContext
                 .HasColumnName("estado");
             entity.Property(e => e.IdCliente).HasColumnName("id_cliente");
             entity.Property(e => e.Numero).HasColumnName("numero");
+            entity.Property(e => e.Saldo)
+                .HasColumnType("decimal(20, 2)")
+                .HasColumnName("saldo");
             entity.Property(e => e.SaldoInicial)
                 .HasColumnType("decimal(20, 2)")
                 .HasColumnName("saldo_inicial");
             entity.Property(e => e.Tipo)
-                .HasMaxLength(5)
-                .IsUnicode(false)
+                .HasMaxLength(15)
                 .HasColumnName("tipo");
 
             entity.HasOne(d => d.IdClienteNavigation).WithMany(p => p.Cuenta)
