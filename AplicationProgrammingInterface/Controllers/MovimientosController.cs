@@ -41,11 +41,11 @@ namespace AplicationProgrammingInterface.Controllers
 
 
         [HttpGet]
-        public IActionResult GetMovimientosbyFechasUsuario(string id_usuario , string fecha)
+        public IActionResult GetMovimientosbyFechasUsuario(string id_usuario , string fecha_inicio, string fecha_fin)
         {
             try
             {
-                var movimientos = _unitOfWork.Movimientos.GetMovimientosbyFechaUsuario(new Guid(id_usuario), fecha);
+                var movimientos = _unitOfWork.Movimientos.GetMovimientosbyFechaUsuario(new Guid(id_usuario), fecha_inicio,fecha_fin);
                 return Ok(movimientos);
             }
             catch (Exception ex)

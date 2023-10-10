@@ -11,6 +11,6 @@ namespace Domain.Interfaces
     public interface IMovimientosRepository : IGenericRepository<Movimiento>
     {
 
-        IEnumerable<ReporteMovimientosFechaUsuario> GetMovimientosbyFechaUsuario(Guid id, string fecha);
+        IEnumerable<ReporteMovimientosFechaUsuario> GetMovimientosbyFechaUsuario(Guid id, string fecha_inicio, string fecha_fin);
     }
 }

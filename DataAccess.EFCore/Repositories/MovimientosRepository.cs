@@ -18,9 +18,10 @@ namespace DataAccess.EFCore.Repositories
 
 
 
-        public IEnumerable<ReporteMovimientosFechaUsuario>  GetMovimientosbyFechaUsuario(Guid id_usuario, string fecha)
+        public IEnumerable<ReporteMovimientosFechaUsuario>  GetMovimientosbyFechaUsuario(Guid id_usuario, string fecha_inicio, string fecha_fin)
         {
-            DateTime fechadt = DateTime.ParseExact(fecha, "dd/MM/yyyy", CultureInfo.InvariantCulture);
+            DateTime fecha_inicio_dt = DateTime.ParseExact(fecha_inicio, "dd/MM/yyyy", CultureInfo.InvariantCulture);
+            DateTime fecha_fin_dt = DateTime.ParseExact(fecha_fin, "dd/MM/yyyy", CultureInfo.InvariantCulture);
 
             var result = (from mov in _context.Movimientos
                           join cuen in _context.Cuenta
@@ -30,7 +31,7 @@ namespace DataAccess.EFCore.Repositories
                           join per in _context.Personas
                           on cli.IdPersona equals per.Id
 
-                          where cli.Id == id_usuario && mov.Fecha.Date == fechadt
+                          where cli.Id == id_usuario &&  (mov.Fecha.Date >= fecha_inicio_dt && mov.Fecha.Date <= fecha_fin_dt)
                           select new ReporteMovimientosFechaUsuario
                           {
                               Fecha = mov.Fecha,
